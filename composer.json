@@ -1,0 +1,16 @@
+{
+  "name": "truongnx/f3test",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Truong Nguyen",
+      "email": "truongnguyen@emddi.com"
+    }
+  ],
+  "require": {}
+}
