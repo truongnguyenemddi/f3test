@@ -16,7 +16,12 @@ $app = require('../fatfree-core/base.php');
  */
 $app->config('../config.ini');
 if ((float)PCRE_VERSION < 8.0) trigger_error('PCRE out of date');
-if (!is_writable($app->get('TEMP'))) trigger_error('TEMP not writable');
+
+/**
+ * Custom config
+ */
+$app->set('ROOT_PATH', dirname(__DIR__));
+$app->set('VIEWS_PATH', 'src/Views');
 
 /**
  * Load Routes
