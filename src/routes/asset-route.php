@@ -21,7 +21,7 @@ $app->route('GET /minify/@type', // @type will make `PARAMS.type` variable base 
         }
 
 		$files = preg_replace('/(\.+\/)/','',$files); // close potential hacking attempts
-		$path = $app->ROOT_PATH . '/';
+		$path = $app->get('ROOT') . '/';
 		echo Web::instance()->minify($files, null, true, $path); // minify will grab each file specified in the querystring var named 'files' and combine into 1 output
 	},
 	// 3600*24 // Save the minified file in F3 cache for 24 hours. future requests for this route will use cached version
@@ -48,7 +48,7 @@ $app->route('GET /load/@type',
         }
 
 		$file = preg_replace('/(\.+\/)/','',$file); // close potential hacking attempts
-		$path = $app->ROOT_PATH . '/' . $file;
+		$path = $app->get('ROOT') . '/' . $file;
 		if (!file_exists($path)) { // Check file exist
             $app->error(404);
         }
@@ -57,11 +57,3 @@ $app->route('GET /load/@type',
 	},
 	// 3600*24
 );
-
-// Public routes
-$app->route('GET /login', 'App\Controllers\GuestController->renderLogin');
-$app->route('GET /about', 'App\Controllers\PublicController->renderAbout');
-$app->route('GET /contact', 'App\Controllers\PublicController->renderContact');
-
-// Admin protected routes
-$app->route('GET /', 'App\Controllers\AdminController->renderHome');

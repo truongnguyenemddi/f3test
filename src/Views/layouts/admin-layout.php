@@ -1,22 +1,22 @@
 <?php
   $cssFiles = [
-    $VIEWS_PATH . '/css/layout.css',
-    $VIEWS_PATH . '/css/admin.css',
+    $UI . 'css/layout.css',
+    $UI . 'css/admin.css',
   ];
   $jsFiles = [
-    $VIEWS_PATH . '/js/layout.js',
-    $VIEWS_PATH . '/js/admin.js',
+    $UI . 'js/layout.js',
+    $UI . 'js/admin.js',
   ];
 ?>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="<?php echo $ENCODING; ?>" />
-    <title>Powered by <?php echo $PACKAGE; ?></title>
+    <title><?php echo $SITE_NAME; ?></title>
     <base href="<?php echo $SCHEME.'://'.$HOST.':'.$PORT.$BASE.'/'; ?>" />
     <link rel="shortcut icon" href="/assets/icons/favicon.ico">
-    <link rel="stylesheet" href="assets/css/base.css" type="text/css" />
-    <link rel="stylesheet" href="assets/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="/assets/css/base.css<?= '?v='. $ASSET_VER ?>" type="text/css" />
+    <link rel="stylesheet" href="/assets/css/theme.css<?= '?v=' . $ASSET_VER ?>" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/minify/css?files=<?= implode(',', $cssFiles) ?>" />
     <script type="text/javascript" src="/minify/js?files=<?= implode(',', $jsFiles) ?>"></script>
   </head>

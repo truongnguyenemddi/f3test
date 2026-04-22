@@ -1,7 +1,7 @@
 <?php
-namespace App\Helpers;
+namespace App\Utils;
 
-class Utils {
+class StringHelper {
     public static function slugify($text) {
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
