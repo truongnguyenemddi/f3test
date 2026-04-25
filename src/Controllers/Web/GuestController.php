@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\web;
 
 class GuestController {
     protected $app;
@@ -33,5 +33,11 @@ class GuestController {
     public function renderLogin() {
         $this->app->set('page_title', 'Login account');
         $this->pageContent = 'pages/login.php';
+    }
+
+    // Render login
+    public function renderLoginJWT() {
+        $this->app->set('page_title', 'Login JWT');
+        $this->pageContent = 'pages/login-jwt.php';
     }
 }

@@ -27,6 +27,7 @@ $app->route('GET /minify/@type', // @type will make `PARAMS.type` variable base 
 	// 3600*24 // Save the minified file in F3 cache for 24 hours. future requests for this route will use cached version
 );
 
+
 /**
 *	Load file route
 * 	Use: /load/js?file=file.js

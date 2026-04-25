@@ -1,11 +1,11 @@
 <?php
 /** @var \Base $app */
 
-// Get user list
-$app->route('GET /api/v1/users', 'App\Controllers\Api\UserController->list');
+$API_PREFIX = '/api/v1';
 
-// Get product details
-$app->route('GET /api/v1/product/@id', 'App\Controllers\Api\ProductController->get');
-
-// Handle send form to AJAX (POST)
-$app->route('POST /api/v1/contact', 'App\Controllers\Api\ContactController->submit');
+/**
+*	Auth
+**/
+$app->route("POST {$API_PREFIX}/login", 'App\Controllers\Api\AuthController->login');
+$app->route("POST {$API_PREFIX}/logout", 'App\Controllers\Api\AuthController->logout');
+$app->route("GET {$API_PREFIX}/auth/health", 'App\Controllers\Api\AuthHealthController->health');
