@@ -21,6 +21,9 @@
     <script type="text/javascript" src="/minify/js?files=<?= implode(',', $jsFiles) ?>"></script>
   </head>
   <body>
-    <?php echo View::instance()->render($content); ?>
+    <?php echo View::instance()->render('components/header.php'); ?>
+    <main class="admin-main">
+      <?php echo View::instance()->render($content); ?>
+    </main>
   </body>
 </html>

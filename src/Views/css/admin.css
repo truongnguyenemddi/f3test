@@ -1,3 +1,73 @@
-h2 {
-  color: rgb(0, 152, 255);
+/* Admin Header Styles */
+.admin-header {
+  background: linear-gradient(135deg, #0098ff 0%, #0075cc 100%);
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.site-title {
+  color: white;
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.user-info {
+  color: white;
+  font-size: 14px;
+}
+
+.user-info strong {
+  font-weight: 600;
+  color: #fff;
+}
+
+.btn-logout {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-logout:active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Admin Main Content */
+.admin-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }

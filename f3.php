@@ -31,6 +31,11 @@ $f3->set('AUTOLOAD', 'src/');
 if ((float)PCRE_VERSION < 8.0) trigger_error('PCRE out of date');
 
 /**
+ * Start session
+ */
+new Session();
+
+/**
  * Load the application
  */
 (function($app) {

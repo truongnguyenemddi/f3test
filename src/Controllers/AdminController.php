@@ -14,11 +14,8 @@ class AdminController {
      */
     public function beforeroute() {
         if (!$this->app->exists('SESSION.user')) {
-            /* 
-                // Open this code to enable auth check
-                $this->app->reroute('/login');
-                exit;
-            */
+            $this->app->reroute('/login');
+            exit;
         }
     }
 
