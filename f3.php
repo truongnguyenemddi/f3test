@@ -7,6 +7,12 @@ if (file_exists('vendor/autoload.php')) {
 }
 
 /**
+ * Load .env file
+ */
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+/**
  * Fat-Free Core Framework
  */
 $f3 = require('fatfree-core/base.php');
@@ -14,7 +20,7 @@ $f3 = require('fatfree-core/base.php');
 /**
  * Load configuration
  */
-$f3->set('DEBUG', 3); // 0-production 1-low 2-medium 3-high
+$f3->set('DEBUG', $_ENV['IS_DEV'] ? 3 : 0); // 0-production 1-low 2-medium 3-high
 $f3->set('CACHE', true);
 $f3->set('ROOT', __DIR__);
 $f3->set('AUTOLOAD', 'src/');
