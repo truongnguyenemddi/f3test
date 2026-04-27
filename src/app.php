@@ -4,19 +4,14 @@
 // Framework variables
 $app->set('UI', 'src/Views/');
 
-// Database connection
-$db = new \DB\SQL(
-    $_ENV['DB_DSN'] ?? '',
-    $_ENV['DB_USER'] ?? '',
-    $_ENV['DB_PASS'] ?? ''
-);
-$app->set('DB', $db);
-
 // Application variables
-$app->set('SITE_NAME', 'F3 Skeleton');
+$app->set('SITE_NAME', 'Emddi | Quản lý hệ thống đặt và điều vận xe | NAT 2.0.0');
 $app->set('ASSET_VER', '1.0.0');
 
+// Database configuration
+require __DIR__ . '/config/databases.php';
+
 // Load Routes
-require 'routes/asset-route.php';
-require 'routes/view-route.php';
-require 'routes/api-route.php';
+require __DIR__ . '/routes/asset-route.php';
+require __DIR__ . '/routes/view-route.php';
+require __DIR__ . '/routes/api-route.php';

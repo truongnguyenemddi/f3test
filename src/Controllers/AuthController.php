@@ -2,18 +2,22 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Services\DbService;
 
-class AuthController {
+class AuthController
+{
     protected $app;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->app = \Base::instance();
     }
 
     /**
      * Handle login form submit
      */
-    public function login() {
+    public function login()
+    {
         $identity = trim((string) $this->app->get('POST.identity'));
         $password = (string) $this->app->get('POST.password');
 
@@ -23,8 +27,7 @@ class AuthController {
             return;
         }
 
-        /** @var \DB\SQL $db */
-        $db = $this->app->get('DB');
+        $db = DbService::get('maindb');
         $user = (new User($db))->findByIdentity($identity);
 
         if (!$user || !$user->verifyPassword($password)) {
@@ -48,7 +51,8 @@ class AuthController {
     /**
      * Handle logout
      */
-    public function logout() {
+    public function logout()
+    {
         $this->app->clear('SESSION.user');
         $this->app->set('SESSION.flash_success', 'You have been logged out.');
         $this->app->reroute('/login');
