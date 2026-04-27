@@ -4,9 +4,11 @@ namespace App\Controllers;
 class GuestController {
     protected $app;
     protected $pageContent;
+    protected $layout;
 
     public function __construct() {
         $this->app = \Base::instance();
+        $this->layout = 'layouts/public-layout.php';
     }
 
     /**
@@ -25,7 +27,7 @@ class GuestController {
     public function afterroute() {
         if ($this->pageContent) {
             $this->app->set('content', $this->pageContent);
-            echo \View::instance()->render('layouts/public-layout.php');
+            echo \View::instance()->render($this->layout);
         }
     }
 
@@ -33,5 +35,6 @@ class GuestController {
     public function renderLogin() {
         $this->app->set('page_title', 'Login account');
         $this->pageContent = 'pages/login.php';
+        $this->layout = 'layouts/auth-layout.php';
     }
 }
