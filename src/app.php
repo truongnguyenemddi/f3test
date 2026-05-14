@@ -5,7 +5,7 @@
 $app->set('UI', 'src/Views/');
 
 // Application variables
-$app->set('SITE_NAME', 'F3 Skeleton');
+$app->set('SITE_NAME', 'Emddi | Quản lý hệ thống đặt và điều vận xe | NAT 2.0.0');
 $app->set('ASSET_VER', '1.0.0');
 
 // Database configuration

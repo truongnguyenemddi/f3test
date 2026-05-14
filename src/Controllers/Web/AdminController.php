@@ -13,7 +13,7 @@ class AdminController {
      * Auth middleware in
      */
     public function beforeroute() {
-        if (!$this->app->exists('SESSION.user')) {
+        if (!$this->app->exists('SESSION.userID')) {
             $this->app->reroute('/login');
             return;
         }

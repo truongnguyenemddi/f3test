@@ -1,8 +1,9 @@
 <?php
 namespace App\Controllers\web;
 
-use App\Models\User;
-use App\Services\DbService;
+use App\Services\AuthService;
+use App\Services\AuditLogService;
+use App\Services\JwtService;
 
 class AuthController
 {
@@ -14,47 +15,76 @@ class AuthController
     }
 
     /**
-     * Handle login form submit
+     * Handle login form submit (POST /login).
+     * Form fields: user_name, password (see pages/login.php).
      */
-    public function login()
+    public function login(): void
     {
-        $identity = trim((string) $this->app->get('POST.identity'));
-        $password = (string) $this->app->get('POST.password');
+        $auth = AuthService::authenticate(
+            (string) $this->app->get('POST.user_name'),
+            (string) $this->app->get('POST.password')
+        );
 
-        if ($identity === '' || $password === '') {
-            $this->app->set('SESSION.flash_error', 'Please enter username/email and password.');
-            $this->app->reroute('/login');
+        if (!$auth['ok']) {
+            $query = $auth['error'] === AuthService::ERR_DENIED ? 'denied' : 'failed';
+            $this->app->reroute('/login?login=' . $query);
             return;
         }
 
-        $db = DbService::get('maindb');
-        $user = (new User($db))->findByIdentity($identity);
+        // Lưu user vào session
+        AuthService::applyWebSession($auth);
 
-        if (!$user || !$user->verifyPassword($password)) {
-            $this->app->set('SESSION.flash_error', 'Invalid username/email or password.');
-            $this->app->reroute('/login');
-            return;
+        // Create JWT access token and store as httpOnly cookie
+        try {
+            $issued = JwtService::issueForUser($auth['user']);
+            JwtService::setAccessCookie($issued['token'], $issued['exp']);
+        } catch (\Throwable $e) {
+            // Non-fatal: session login still works without JWT cookie
         }
 
-        $this->app->set('SESSION.user', [
-            'user_id' => $user->user_id ?? null,
-            'user_name' => $user->user_name ?? null,
-            'full_name' => $user->full_name ?? null,
-            'email' => $user->email ?? null,
-            'role' => $user->role ?? null,
-            'office_id' => $user->office_id ?? null,
-        ]);
+        // Diary
+        try {
+            AuditLogService::writeDiary('Đã đăng nhập vào hệ thống');
+        } catch (\Throwable $e) {
+            // Do not block process on audit failure
+        }
+
+        // Online
+        try {
+            AuthService::setOnline($auth['user']->user_id, true);
+        } catch (\Throwable $e) {
+            // Non-fatal
+        }
+
+        // Regenerate session id
+        if (session_status() === \PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
 
         $this->app->reroute('/');
     }
 
-    /**
-     * Handle logout
-     */
-    public function logout()
+    public function logout(): void
     {
-        $this->app->clear('SESSION.user');
-        $this->app->set('SESSION.flash_success', 'You have been logged out.');
+        // Diary
+        try {
+            AuditLogService::writeDiary('Đã thoát khỏi hệ thống');
+        } catch (\Throwable $e) {
+            // Do not block process on audit failure
+        }
+
+        // Offline
+        try {
+            $userId = $this->app->get('SESSION.userID');
+            if ($userId !== null && $userId !== '') {
+                AuthService::setOnline($userId, false);
+            }
+        } catch (\Throwable $e) {
+            // Non-fatal
+        }
+
+        JwtService::clearAccessCookie();
+        $this->app->clear('SESSION');
         $this->app->reroute('/login');
     }
 }

@@ -1,15 +1,15 @@
 <?php
 namespace App\Controllers\Api;
 
+use App\Services\JwtService;
+
 /**
- * GET /api/v1/auth/health — requires Authorization: Bearer (access_token).
- * Uses the same JWT_SECRET / iss / aud rules as BaseApiController.
+ * GET /api/v1/auth/health — Bearer or jwt_access_token cookie.
  */
 class AuthHealthController extends BaseApiController
 {
     public function health(): void
     {
-        $user = $this->jwtClaims['user'] ?? null;
         $exp = isset($this->jwtClaims['exp']) && is_numeric($this->jwtClaims['exp'])
             ? (int) $this->jwtClaims['exp']
             : null;
@@ -17,9 +17,9 @@ class AuthHealthController extends BaseApiController
         $this->json([
             'ok' => true,
             'authenticated' => true,
-            'sub' => $this->jwtClaims['sub'] ?? null,
+            'user_id' => JwtService::userIdFromClaims($this->jwtClaims),
+            'office_id' => JwtService::officeIdFromClaims($this->jwtClaims),
             'exp' => $exp,
-            'user' => is_array($user) ? $user : null,
         ]);
     }
 }
